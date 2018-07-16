@@ -4,4 +4,5 @@ const schema = mongoose.Schema({
   name: String,
 });
 
-export default mongoose.model('User', schema);
+// Dynamic import must be CommonJS Module
+module.exports = mongoose.model('User', schema);
