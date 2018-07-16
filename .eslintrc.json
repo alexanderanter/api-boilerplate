@@ -1,0 +1,12 @@
+{
+  "extends": ["airbnb", "prettier"],
+  "rules": {
+    "no-undef": "warn",
+    "no-unreachable": "warn",
+    "no-unused-vars": "warn",
+    "func-names": "off",
+    "no-param-reassign": "off",
+    "no-underscore-dangle": "off",
+    "comma-dangle": "warn"
+  }
+}
