@@ -6,11 +6,3 @@ module.exports = {
     secret: 'c563bbf30c548c177a76e0b4cfc95218cad80921',
   },
 };
-
-// module.exports.mongoose = {
-//   uri: 'mongodb://database:27017/test',
-// };
-
-// module.exports.jwt = {
-//   secret: 'c563bbf30c548c177a76e0b4cfc95218cad80921',
-// };
