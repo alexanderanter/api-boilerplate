@@ -1,0 +1,26 @@
+version: '2'
+
+# Define the services/containers to be run
+services:
+  app: #name of your service
+    build: ./ # specify the directory of the Dockerfile
+    command: nodemon -L app.js --exec babel-node
+    restart: always
+    ports:
+      - "8080:8080" #specify ports forwarding
+    links:
+      - database # link this service to the database service
+    volumes:
+      - .:/app
+    depends_on:
+      - database
+
+  database: # name of the service
+    image: mongo # specify image to build container from
+    ports:
+     - "27017:27017"
+    volumes:
+      - data-volume:/src/data/db
+
+volumes:
+  data-volume:
