@@ -6,7 +6,8 @@ const { secret } = config.get('jwt');
 const createToken = user =>
   jwt.sign(
     {
-      id: user.id,
+      _id: user._id,
+      providerId: user.providerId,
       provider: user.provider,
       email: user.email,
       firstName: user.firstName,
@@ -20,8 +21,12 @@ const createToken = user =>
   );
 
 export const encode = async (ctx, next) => {
-  ctx.token = createToken(ctx.user);
-  await next();
+  try {
+    ctx.token = createToken(ctx.user);
+    await next();
+  } catch (error) {
+    ctx.body = error;
+  }
 };
 
 export const send = async ctx => {
