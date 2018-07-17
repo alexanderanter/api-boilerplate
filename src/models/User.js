@@ -1,7 +1,12 @@
 import mongoose from 'mongoose';
 
 const schema = mongoose.Schema({
-  name: String,
+  firstName: String,
+  lastName: String,
+  email: String,
+  picture: String,
+  provider: String,
+  providerId: String,
 });
 
 // Dynamic import must be CommonJS Module
