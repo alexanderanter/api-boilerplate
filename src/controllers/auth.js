@@ -1,4 +1,5 @@
 import passport from 'koa-passport';
+import { FACEBOOK_TOKEN, GOOGLE_TOKEN } from '../lib/constants';
 
 export const local = async ctx => {
   ctx.status = 501;
@@ -6,7 +7,7 @@ export const local = async ctx => {
 };
 
 export const google = async (ctx, next) => {
-  await passport.authenticate('google-id-token', async (err, user, info) => {
+  await passport.authenticate(GOOGLE_TOKEN, async (err, user, info) => {
     if (err || info) {
       // eslint-disable-next-line
       console.log(`error: ${err}`);
@@ -18,7 +19,7 @@ export const google = async (ctx, next) => {
 };
 
 export const facebook = async (ctx, next) => {
-  await passport.authenticate('facebook-token', async (err, user, info) => {
+  await passport.authenticate(FACEBOOK_TOKEN, async (err, user, info) => {
     if (err || info) {
       // eslint-disable-next-line
       console.log(`error: ${err}`);
@@ -29,11 +30,6 @@ export const facebook = async (ctx, next) => {
     ctx.user = user;
     await next();
   })(ctx, next);
-};
-
-export const facebookCallback = async ctx => {
-  console.log(ctx);
-  ctx.status = 201;
 };
 
 export const test = async ctx => {
