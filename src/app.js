@@ -61,7 +61,7 @@ app.on('error', (err, ctx) => {
 });
 
 if (!module.parent) {
-  const port = process.env.PORT || '8000';
+  const port = process.env.PORT || '8080';
   app.listen(port);
   // eslint-disable-next-line
   console.log('Listening on ' + port);
