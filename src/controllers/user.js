@@ -10,6 +10,7 @@ export const create = async ctx => {
       provider,
       providerId: id,
     });
+    userModel.save();
     ctx.user = userModel;
   } catch (error) {
     ctx.body = error;
