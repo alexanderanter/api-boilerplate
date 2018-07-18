@@ -13,5 +13,8 @@ config/local-*.js
 # secrets
 secrets
 
-#editor stuff
+# editor stuff
 .vscode
+
+# dotenv
+.env
