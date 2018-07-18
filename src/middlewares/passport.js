@@ -1,8 +1,10 @@
 import passport from 'koa-passport';
 import GoogleTokenStrategy from 'passport-google-id-token';
 import FacebookTokenStrategy from 'passport-facebook-token';
-import googleConfig from '../config/google.config';
-import facebookConfig from '../config/facebook.config';
+import config from 'config';
+
+const googleConfig = config.get('google');
+const facebookConfig = config.get('facebook');
 
 export default () => async (ctx, next) => {
   await passport.use(
