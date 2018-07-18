@@ -7,6 +7,9 @@
     "name": "Beppe Karlsson",
     "email": "beppe@live.se"
   },
+  "repository": {
+    "url": "https://github.com/reftoken/api-boilerplate"
+  },
   "keywords": [
     "koa",
     "restful",
