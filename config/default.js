@@ -1,4 +1,4 @@
-import 'dotenv/config';
+require('dotenv').config();
 
 module.exports = {
   facebook: {
@@ -10,5 +10,8 @@ module.exports = {
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     authorizationURL: 'https://accounts.google.com/o/oauth2/v2/auth',
     tokenURL: 'https://accounts.google.com/o/oauth2/token',
+  },
+  jwt: {
+    secret: process.env.JWT_SECRET,
   },
 };

@@ -1,20 +1,20 @@
-import Koa from 'koa';
-import logger from 'koa-logger';
-import helmet from 'koa-helmet';
-import cors from '@koa/cors';
-import koaBody from 'koa-body';
-import koaStatic from 'koa-static';
-import path from 'path';
-import config from 'config';
-import bouncer from 'koa-bouncer';
-import mongoose from 'mongoose';
-import passport from 'koa-passport';
+const Koa = require('koa');
+const logger = require('koa-logger');
+const helmet = require('koa-helmet');
+const cors = require('@koa/cors');
+const koaBody = require('koa-body');
+const koaStatic = require('koa-static');
+const path = require('path');
+const config = require('config');
+const bouncer = require('koa-bouncer');
+const mongoose = require('mongoose');
+const passport = require('koa-passport');
 
-import errorHandling from './middlewares/error-handling';
-import passportConfig from './middlewares/passport';
+const errorHandling = require('./middlewares/error-handling');
+const passportConfig = require('./middlewares/passport');
 
-import init from './lib/init';
-import routes from './routes';
+const init = require('./lib/init');
+const routes = require('./routes');
 
 const { uri, options } = config.get('mongoose');
 mongoose.connect(
@@ -67,4 +67,4 @@ if (!module.parent) {
   console.log('Listening on ' + port);
 }
 
-export default app;
+module.exports = app;

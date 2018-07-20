@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
-import config from 'config';
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 const { secret } = config.get('jwt');
 
@@ -20,22 +20,23 @@ const createToken = user =>
     },
   );
 
-export const encode = async (ctx, next) => {
+const encode = async (ctx, next) => {
   try {
     ctx.token = createToken(ctx.user);
     await next();
   } catch (error) {
-    ctx.body = error;
+    // TODO: Better error
+    ctx.throw(error);
   }
 };
 
-export const send = async ctx => {
+const send = async ctx => {
   ctx.set('x-auth-token', ctx.token);
   ctx.status = 200;
   ctx.body = { token: ctx.token, user: ctx.user };
 };
 
-export const decode = async (ctx, next) => {
+const decode = async (ctx, next) => {
   let { token } = ctx.request.body;
   if (!token) {
     token = ctx.get('x-auth-token');
@@ -43,13 +44,21 @@ export const decode = async (ctx, next) => {
   try {
     ctx.decoded = jwt.verify(token, secret);
   } catch (err) {
-    console.log(err);
+    // TODO: Better error
+    ctx.throw(err);
   }
   await next();
 };
 
-export const safeDecodeUser = async (ctx, next) => {
+const safeDecodeUser = async (ctx, next) => {
   const { email, firstName, lastName, picture } = ctx.decoded;
   ctx.user = { email, firstName, lastName, picture };
   await next();
+};
+
+module.exports = {
+  encode,
+  send,
+  decode,
+  safeDecodeUser,
 };

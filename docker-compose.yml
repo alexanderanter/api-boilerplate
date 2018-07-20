@@ -4,7 +4,7 @@ version: '2'
 services:
   app: #name of your service
     build: ./ # specify the directory of the Dockerfile
-    command: nodemon -L app.js --exec babel-node
+    command: nodemon -L app.js
     restart: always
     ports:
       - "8080:8080" #specify ports forwarding
@@ -20,7 +20,7 @@ services:
     ports:
      - "27017:27017"
     volumes:
-      - data-volume:/src/data/db
+      - data-volume:/data/db
 
 volumes:
   data-volume:

@@ -1,4 +1,4 @@
-export const create = async ctx => {
+const create = async ctx => {
   const { User } = ctx.models;
   const { firstName, lastName, email, picture, provider, id } = ctx.user;
   try {
@@ -17,7 +17,7 @@ export const create = async ctx => {
   }
 };
 
-export const match = async (ctx, next) => {
+const match = async (ctx, next) => {
   const { User } = ctx.models;
   await User.findOne(
     { email: ctx.user.email },
@@ -40,7 +40,7 @@ export const match = async (ctx, next) => {
   );
 };
 
-export const list = async ctx => {
+const list = async ctx => {
   const { User } = ctx.models;
   ctx
     .validateQuery('page')
@@ -63,4 +63,10 @@ export const list = async ctx => {
     limit,
     users,
   };
+};
+
+module.exports = {
+  create,
+  match,
+  list,
 };
