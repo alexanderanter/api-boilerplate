@@ -34,9 +34,7 @@ docker-compose up
 
 This API uses the KoaJS framwork. Koa's greatness comes from its use of async/await pattern and staying up to date with the latest ECMAScript specifications.
 
-Another benefit of this API is the babel transpiler which allows you to write beautiful code using ES6 Modules, thereby future proofing your applications (maybe, or maybe not - more on that [here](https://medium.com/@giltayar/native-es-modules-in-nodejs-status-and-future-directions-part-i-ee5ea3001f71)). It also means that syntax can be uniform across the API and frontend clients using babel to transpile the latest ES language features.
-
-All routes and controllers are dynamically added, so you don't need to remember to add new routes to the router, or controllers to the app. It's handled automagically. Here comes a crux though, since dynamic module loading is not part of import/export specification ([yet](https://github.com/tc39/proposal-dynamic-import)), all routes and controllers currently need to use the regular module.exports pattern since they are imported using require with initalisation on import. When dynamic imports become a part of the standard it will also be added in this boilerplate.
+All routes and controllers are dynamically added, so you don't need to remember to add new routes to the router, or controllers to the app. It's handled automagically.
 
 The application runs inside a docker container (supplied) and uses its own database (mongodb) which means you can set up this for development on any system (almost sorry most Windows users, but it's probably time you change your OS anyway).
 

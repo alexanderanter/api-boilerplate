@@ -9,5 +9,4 @@ const schema = mongoose.Schema({
   providerId: String,
 });
 
-// Dynamic import must be CommonJS Module
 module.exports = mongoose.model('User', schema);
