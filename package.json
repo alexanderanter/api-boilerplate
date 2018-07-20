@@ -16,7 +16,7 @@
     "api"
   ],
   "scripts": {
-    "start": "nodemon -L app.js"
+    "start": "nodemon app.js"
   },
   "license": "MIT",
   "dependencies": {

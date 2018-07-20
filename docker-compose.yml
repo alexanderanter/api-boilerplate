@@ -1,22 +1,25 @@
-version: '2'
+version: '3'
 
 # Define the services/containers to be run
 services:
   app: #name of your service
     build: ./ # specify the directory of the Dockerfile
-    command: nodemon -L app.js
+    command: npm start
+    container_name: api-app
     restart: always
+    environment:
+      - CHOKIDAR_USEPOLLING=true
     ports:
       - "8080:8080" #specify ports forwarding
-    links:
-      - database # link this service to the database service
     volumes:
-      - .:/app
+      - .:/home/web/api
+      - /home/web/api/node_modules
     depends_on:
       - database
 
   database: # name of the service
     image: mongo # specify image to build container from
+    container_name: api-db
     ports:
      - "27017:27017"
     volumes:
