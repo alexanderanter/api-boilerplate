@@ -42,6 +42,7 @@
     "passport-facebook-token": "^3.3.0",
     "passport-google-id-token": "^0.4.5",
     "passport-oauth2": "^1.4.0",
+    "socket.io": "^2.1.1",
     "statuses": "^1.4.0"
   },
   "devDependencies": {
