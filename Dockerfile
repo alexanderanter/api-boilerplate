@@ -10,12 +10,12 @@ USER web
 
 # Create app directory and copy package.json and package-lock.json to it
 # Using --chown flag so that the new files are not owned by root
-RUN mkdir $HOME/api
-COPY --chown=web:web package.json package-lock.json $HOME/api/
+RUN mkdir $HOME/app
+COPY --chown=web:web package.json package-lock.json $HOME/app/
 
 # Switch working directory and install dependencies using npm ci, 
 # which drastically lowers install time
-WORKDIR $HOME/api
+WORKDIR $HOME/app
 RUN npm ci
 
 # Copies the rest of the app to the folder. Note a few things:
