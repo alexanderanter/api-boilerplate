@@ -1,5 +1,5 @@
 const pong = async ctx => {
-  ctx.body = 'Pong!';
+  ctx.body = { message: 'Pong!' };
 };
 
 const email = async ctx => {
