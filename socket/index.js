@@ -1,11 +1,7 @@
 const io = require('socket.io');
 
-const events = [
-  'message:sent',
-  'message:seen',
-  'message:typing',
-  'message:stop',
-];
+const events = require('./events');
+const message = require('./events/message');
 
 module.exports = {
   init: server => io(server),
@@ -17,7 +13,7 @@ module.exports = {
         // eslint-disable-next-line
         console.log(`Message received: ${data}`);
         if (e === 'message:sent') {
-          socket.emit('message:seen', 'API can has seen your message!');
+          message.sent(socket);
         }
         socket.broadcast.emit(e, data);
       });
