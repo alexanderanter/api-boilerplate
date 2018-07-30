@@ -11,6 +11,6 @@ module.exports = {
     ssl: true,
   },
   passwordless: {
-    url: `http://localhost:${process.env.PORT}`,
+    client: `http://localhost:3000`,
   },
 };
