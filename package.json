@@ -16,7 +16,15 @@
     "api"
   ],
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js}": [
+      "prettier --write",
+      "git add",
+      "eslint"
+    ]
   },
   "license": "MIT",
   "dependencies": {
