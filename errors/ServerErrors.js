@@ -1,11 +1,7 @@
-class NotImplemented extends Error {
-  constructor(...args) {
-    super(...args);
-    Error.captureStackTrace(this, NotImplemented);
-    this.status = 501;
-    this.message = 'Not implemented.';
-  }
-}
+const NotImplemented = {
+  status: 501,
+  message: 'Not implemented.',
+};
 
 class BadGateway extends Error {
   constructor(...args) {
@@ -29,4 +25,4 @@ module.exports = {
   NotImplemented,
   BadGateway,
   GatewayTimeout,
-}
+};

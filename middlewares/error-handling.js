@@ -1,4 +1,5 @@
 const { ValidationError } = require('koa-bouncer');
+const { NotImplemented } = require('../errors/ServerErrors');
 const statuses = require('statuses');
 
 module.exports = function errorHandling() {
@@ -10,6 +11,9 @@ module.exports = function errorHandling() {
       switch (err) {
         case ValidationError:
           ctx.status = 422;
+          break;
+        case NotImplemented:
+          ctx.status = err.status;
           break;
         default:
           ctx.status = err.statusCode || err.status || 500;
