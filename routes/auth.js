@@ -9,5 +9,12 @@ module.exports = function(app, router) {
     jwt.encode,
     jwt.send,
   );
+  router.post(
+    '/auth/email',
+    auth.createEmailToken,
+    user.saveEmailToken,
+    auth.sendEmail,
+  );
+  router.post('/auth/email/token', auth.verifyEmailToken);
   router.post('/auth/token', jwt.decode, jwt.safeDecodeUser, jwt.send);
 };

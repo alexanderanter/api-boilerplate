@@ -10,7 +10,7 @@ const create = async ctx => {
       provider,
       providerId: id,
     });
-    userModel.save();
+    await userModel.save();
     ctx.user = userModel;
   } catch (error) {
     ctx.body = error;
@@ -24,13 +24,13 @@ const match = async (ctx, next) => {
     'firstName lastName email _id picture provider',
     async (err, user) => {
       if (err) {
-        ctx.body = err;
+        ctx.throw(err);
       } else if (!user) {
         try {
           await create(ctx);
           await next();
         } catch (error) {
-          ctx.body = error;
+          ctx.throw(error);
         }
       } else if (user) {
         ctx.user = user;
@@ -65,8 +65,33 @@ const list = async ctx => {
   };
 };
 
+const saveEmailToken = async (ctx, next) => {
+  const { email } = ctx.request.body;
+  const { User } = ctx.models;
+  const { encrypted } = ctx;
+  await User.updateOne({ email }, { token: encrypted }, async (err, res) => {
+    if (err) {
+      ctx.throw(err);
+    }
+    if (res.nModified === 0) {
+      ctx.user = {
+        firstName: null,
+        lastName: null,
+        email,
+        picture: null,
+        provider: 'email',
+        id: null,
+        token: encrypted,
+      };
+      await create(ctx);
+    }
+  });
+  await next();
+};
+
 module.exports = {
   create,
   match,
   list,
+  saveEmailToken,
 };
