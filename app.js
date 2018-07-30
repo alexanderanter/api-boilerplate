@@ -9,11 +9,7 @@ const config = require('config');
 const bouncer = require('koa-bouncer');
 const mongoose = require('mongoose');
 const passport = require('koa-passport');
-// const socket = require('socket.io');
 const http = require('http');
-const passwordless = require('passwordless');
-const MongoStore = require('passwordless-mongostore');
-const email = require('emailjs');
 
 const errorHandling = require('./middlewares/error-handling');
 const passportConfig = require('./middlewares/passport');
@@ -24,7 +20,6 @@ const routes = require('./routes');
 const socket = require('./socket');
 
 const { uri, options } = config.get('mongoose');
-const { url } = config.get('passwordless');
 mongoose.connect(
   uri,
   options,
@@ -55,12 +50,14 @@ app.use(cors());
 if (app.env === 'development') {
   app.use(logger());
 }
-app.use(passport.initialize());
-app.use(passportConfig());
 
 // Email server
 app.context.emailServer = emailServer;
 app.context.emailServer.connect();
+
+// Passport must come after passwordless init and emailServer connect
+app.use(passport.initialize());
+app.use(passportConfig());
 
 // Connect websockets
 io.on('connection', s => {
