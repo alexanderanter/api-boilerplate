@@ -1,6 +1,6 @@
 const create = async ctx => {
   const { User } = ctx.models;
-  const { firstName, lastName, email, picture, provider, id } = ctx.user;
+  const { firstName, lastName, email, picture, provider, id, token } = ctx.user;
   try {
     const userModel = await new User({
       firstName,
@@ -9,6 +9,7 @@ const create = async ctx => {
       picture,
       provider,
       providerId: id,
+      token,
     });
     await userModel.save();
     ctx.user = userModel;
