@@ -1,25 +1,15 @@
 const create = async ctx => {
-  const { User } = ctx.models;
-  const { firstName, lastName, email, picture, provider, id, token } = ctx.user;
-  try {
-    const userModel = await new User({
-      firstName,
-      lastName,
-      email,
-      picture,
-      provider,
-      providerId: id,
-      token,
-    });
-    await userModel.save();
-    ctx.user = userModel;
-  } catch (error) {
-    ctx.body = error;
-  }
+  const { User, ContextUser } = ctx.models;
+  const user = ctx.user.getForDB();
+  const userModel = await new User(user);
+  await userModel.save(err => {
+    if (err) ctx.throw(err);
+  });
+  ctx.user = new ContextUser(userModel);
 };
 
 const match = async (ctx, next) => {
-  const { User } = ctx.models;
+  const { User, ContextUser } = ctx.models;
   await User.findOne(
     { email: ctx.user.email },
     'firstName lastName email _id picture provider',
@@ -34,7 +24,7 @@ const match = async (ctx, next) => {
           ctx.throw(error);
         }
       } else if (user) {
-        ctx.user = user;
+        ctx.user = new ContextUser(user);
         await next();
       }
     },
@@ -68,22 +58,18 @@ const list = async ctx => {
 
 const saveEmailToken = async (ctx, next) => {
   const { email } = ctx.request.body;
-  const { User } = ctx.models;
+  const { User, ContextUser } = ctx.models;
   const { encrypted } = ctx;
   await User.updateOne({ email }, { token: encrypted }, async (err, res) => {
     if (err) {
       ctx.throw(err);
     }
     if (res.nModified === 0) {
-      ctx.user = {
-        firstName: null,
-        lastName: null,
+      ctx.user = new ContextUser({
         email,
-        picture: null,
         provider: 'email',
-        id: null,
         token: encrypted,
-      };
+      });
       await create(ctx);
     }
   });

@@ -22,7 +22,7 @@ const createToken = user =>
 
 const encode = async (ctx, next) => {
   try {
-    ctx.token = createToken(ctx.user);
+    ctx.token = createToken(ctx.user.getForJWT());
     await next();
   } catch (error) {
     // TODO: Better error
@@ -33,7 +33,7 @@ const encode = async (ctx, next) => {
 const send = async ctx => {
   ctx.set('x-auth-token', ctx.token);
   ctx.status = 200;
-  ctx.body = { token: ctx.token, user: ctx.user };
+  ctx.body = { token: ctx.token, user: ctx.user.getAsObject() };
 };
 
 const decode = async (ctx, next) => {
@@ -51,8 +51,9 @@ const decode = async (ctx, next) => {
 };
 
 const safeDecodeUser = async (ctx, next) => {
+  const { ContextUser } = ctx.models;
   const { email, firstName, lastName, picture } = ctx.decoded;
-  ctx.user = { email, firstName, lastName, picture };
+  ctx.user = new ContextUser({ email, firstName, lastName, picture });
   await next();
 };
 

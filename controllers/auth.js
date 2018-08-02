@@ -18,7 +18,8 @@ const google = async (ctx, next) => {
       console.log(`error: ${err}`);
       ctx.body = err || info;
     }
-    ctx.user = user;
+    const { ContextUser } = ctx.models;
+    ctx.user = new ContextUser(user);
     await next();
   })(ctx, next);
 };
@@ -31,7 +32,8 @@ const facebook = async (ctx, next) => {
       if (info) ctx.throw(info);
       ctx.throw(err);
     }
-    ctx.user = user;
+    const { ContextUser } = ctx.models;
+    ctx.user = new ContextUser(user);
     await next();
   })(ctx, next);
 };
@@ -59,7 +61,8 @@ const verifyEmailToken = async (ctx, next) => {
       if (info) ctx.throw(info);
       ctx.throw(err);
     }
-    ctx.user = user;
+    const { ContextUser } = ctx.models;
+    ctx.user = new ContextUser(user);
     await next();
   })(ctx, next);
 };
