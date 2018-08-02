@@ -3,7 +3,11 @@ const config = require('config');
 
 const { encrypt, sha256 } = require('../lib/encryption');
 const { NotImplemented } = require('../errors/ServerErrors');
-const { FACEBOOK_TOKEN, GOOGLE_TOKEN, PASSWORDLESS_EMAIL } = require('../lib/constants');
+const {
+  FACEBOOK_TOKEN,
+  GOOGLE_TOKEN,
+  PASSWORDLESS_EMAIL,
+} = require('../lib/constants');
 
 const { client } = config.get(PASSWORDLESS_EMAIL);
 
