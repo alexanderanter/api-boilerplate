@@ -1,9 +1,5 @@
-// const config = require('config');
 const Router = require('koa-router');
 const fs = require('fs');
-
-// const { secret } = config.get('jwt');
-// const jwt = require('koa-jwt')({ secret });
 
 module.exports = function routes(app) {
   const router = new Router();

@@ -19,6 +19,8 @@ const init = require('./lib/init');
 const routes = require('./routes');
 const socket = require('./socket');
 
+const WS_CONNECTION = 'request';
+
 const { uri, options } = config.get('mongoose');
 mongoose.connect(
   uri,
@@ -27,7 +29,7 @@ mongoose.connect(
 
 const app = new Koa();
 const server = http.createServer(app.callback());
-const io = socket.init(server);
+const ws = socket.init(server);
 
 // error handling
 app.use(errorHandling());
@@ -60,8 +62,11 @@ app.use(passport.initialize());
 app.use(passportConfig());
 
 // Connect websockets
-io.on('connection', s => {
-  socket.listen(s);
+ws.on(WS_CONNECTION, req => {
+  const connection = socket.connect(req);
+  if (connection) {
+    socket.listen(connection);
+  }
 });
 
 init(app);
