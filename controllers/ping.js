@@ -1,7 +1,18 @@
+/**
+ * Pong!
+ *
+ * @param {*} ctx
+ */
 const pong = async ctx => {
   ctx.body = { message: 'Pong!' };
 };
 
+/**
+ * Ping the email server
+ * OBS! SHOULD NOT BE OPEN FOR ANY API CALLS. ONLY FOR TESTING PURPOSES
+ *
+ * @param {*} ctx
+ */
 const email = async ctx => {
   // eslint-disable-next-line
   console.log('Should send email');
@@ -17,11 +28,22 @@ const email = async ctx => {
   }
 };
 
+/**
+ * Ping for socket.io (deprecated)
+ *
+ * @param {*} ctx
+ */
 const socket = async ctx => {
   ctx.socket.emit('message:seen', 'API was pinged by socket.io');
   ctx.status = 204;
 };
 
+/**
+ * Ping error
+ * Throws an internal server error
+ *
+ * @param {*} ctx
+ */
 const error = async ctx => {
   ctx.throw('Ping error');
 };

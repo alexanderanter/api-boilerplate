@@ -1,3 +1,9 @@
+/**
+ * Creates a User entry in the Database
+ * User must be attached to context first
+ *
+ * @param {*} ctx
+ */
 const create = async ctx => {
   const { User, ContextUser } = ctx.models;
   const user = ctx.user.getForDB();
@@ -8,6 +14,13 @@ const create = async ctx => {
   ctx.user = new ContextUser(userModel);
 };
 
+/**
+ * Matches the current user in the context against the database.
+ * If not entry exists in the database, a new User entry is created in the database.
+ *
+ * @param {*} ctx
+ * @param {*} next
+ */
 const match = async (ctx, next) => {
   const { User, ContextUser } = ctx.models;
   await User.findOne(
@@ -31,6 +44,12 @@ const match = async (ctx, next) => {
   );
 };
 
+/**
+ * Lists all Users
+ * Might not work... hehe >:D
+ *
+ * @param {*} ctx
+ */
 const list = async ctx => {
   const { User } = ctx.models;
   ctx
@@ -56,6 +75,13 @@ const list = async ctx => {
   };
 };
 
+/**
+ * Saves the email token to the User in the database
+ * If no matching user is found, a new User entry is created in the database
+ *
+ * @param {*} ctx
+ * @param {*} next
+ */
 const saveEmailToken = async (ctx, next) => {
   const { email } = ctx.request.body;
   const { User, ContextUser } = ctx.models;

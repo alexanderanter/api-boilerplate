@@ -7,10 +7,16 @@ const {
   FACEBOOK_TOKEN,
   GOOGLE_TOKEN,
   PASSWORDLESS_EMAIL,
-} = require('../lib/constants');
+} = require('../constants');
 
 const { client } = config.get(PASSWORDLESS_EMAIL);
 
+/**
+ * Authentication with Google token
+ *
+ * @param {*} ctx
+ * @param {*} next
+ */
 const google = async (ctx, next) => {
   await passport.authenticate(GOOGLE_TOKEN, async (err, user, info) => {
     if (err || info) {
@@ -24,6 +30,12 @@ const google = async (ctx, next) => {
   })(ctx, next);
 };
 
+/**
+ * Authentication with Facebook token
+ *
+ * @param {*} ctx
+ * @param {*} next
+ */
 const facebook = async (ctx, next) => {
   await passport.authenticate(FACEBOOK_TOKEN, async (err, user, info) => {
     if (err || info) {
@@ -38,7 +50,13 @@ const facebook = async (ctx, next) => {
   })(ctx, next);
 };
 
-// TODO: save token to DB
+/**
+ * Creates an encrypted token based on timestamp and email address.
+ * Adds the token to the context and adds email to context for downstream middleware sending
+ *
+ * @param {*} ctx
+ * @param {*} next
+ */
 const createEmailToken = async (ctx, next) => {
   const { email } = ctx.request.body;
   const timestamp = Date.now();
@@ -53,6 +71,12 @@ const createEmailToken = async (ctx, next) => {
   await next();
 };
 
+/**
+ * Verifies token from email by using passport custom strategy implemented in middlewares/passport
+ *
+ * @param {*} ctx
+ * @param {*} next
+ */
 const verifyEmailToken = async (ctx, next) => {
   await passport.authenticate(PASSWORDLESS_EMAIL, async (err, user, info) => {
     if (err || info) {

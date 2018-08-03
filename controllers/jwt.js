@@ -3,12 +3,15 @@ const config = require('config');
 
 const { secret } = config.get('jwt');
 
+/**
+ * Creates a JSON Web Token based on the user object
+ *
+ * @param {*} user
+ */
 const createToken = user =>
   jwt.sign(
     {
       _id: user._id,
-      providerId: user.providerId,
-      provider: user.provider,
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -20,6 +23,12 @@ const createToken = user =>
     },
   );
 
+/**
+ * Encodes the context user to create a JSON Web Token
+ *
+ * @param {*} ctx
+ * @param {*} next
+ */
 const encode = async (ctx, next) => {
   try {
     ctx.token = createToken(ctx.user.getForJWT());
@@ -30,12 +39,23 @@ const encode = async (ctx, next) => {
   }
 };
 
+/**
+ * Sends the JWT
+ *
+ * @param {*} ctx
+ */
 const send = async ctx => {
   ctx.set('x-auth-token', ctx.token);
   ctx.status = 200;
-  ctx.body = { token: ctx.token, user: ctx.user.getAsObject() };
+  ctx.body = { token: ctx.token, user: ctx.user.getForJWT() };
 };
 
+/**
+ * Decodes the JWT and attaches to context
+ *
+ * @param {*} ctx
+ * @param {*} next
+ */
 const decode = async (ctx, next) => {
   let { token } = ctx.request.body;
   if (!token) {
@@ -50,6 +70,12 @@ const decode = async (ctx, next) => {
   await next();
 };
 
+/**
+ * Extrats only information that is safe to return from the API to external resources
+ *
+ * @param {*} ctx
+ * @param {*} next
+ */
 const safeDecodeUser = async (ctx, next) => {
   const { ContextUser } = ctx.models;
   const { email, firstName, lastName, picture } = ctx.decoded;

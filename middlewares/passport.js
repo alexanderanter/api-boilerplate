@@ -6,7 +6,7 @@ const config = require('config');
 
 const googleConfig = config.get('google');
 const facebookConfig = config.get('facebook');
-const { PASSWORDLESS_EMAIL } = require('../lib/constants');
+const { PASSWORDLESS_EMAIL } = require('../constants');
 const { decrypt } = require('../lib/encryption');
 
 module.exports = () => async (ctx, next) => {
