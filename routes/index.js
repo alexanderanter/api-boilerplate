@@ -1,6 +1,11 @@
 const Router = require('koa-router');
 const fs = require('fs');
 
+/**
+ * Reads all routes within the routes dir and initializes the routes with app and router objects
+ *
+ * @param {*} app
+ */
 module.exports = function routes(app) {
   const router = new Router();
 
