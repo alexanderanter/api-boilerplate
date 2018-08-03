@@ -1,5 +1,5 @@
 const FACEBOOK_TOKEN = 'facebook-token';
-const GOOGLE_TOKEN = 'google-id-token';
+const GOOGLE_TOKEN = 'google-token';
 const PASSWORDLESS_EMAIL = 'passwordless';
 
 module.exports = {

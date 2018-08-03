@@ -1,5 +1,5 @@
 const passport = require('koa-passport');
-const GoogleTokenStrategy = require('passport-google-id-token');
+const GoogleTokenStrategy = require('passport-token-google').Strategy;
 const FacebookTokenStrategy = require('passport-facebook-token');
 const CustomStrategy = require('passport-custom');
 const config = require('config');
@@ -14,15 +14,15 @@ module.exports = () => async (ctx, next) => {
   await passport.use(
     new GoogleTokenStrategy(
       googleConfig,
-      async (parsedToken, googleId, done) => {
+      // async (parsedToken, googleId, done) => {
+      async (accessToken, refreshToken, profile, done) => {
         // eslint-disable-next-line
-        const { email, given_name, family_name, picture } = parsedToken.payload;
+        const { email, given_name, family_name, picture } = profile._json;
         const user = new ContextUser({
           email,
           firstName: given_name,
           lastName: family_name,
           picture,
-          providerId: googleId,
           provider: 'google',
         });
         await done(null, user);
@@ -41,7 +41,6 @@ module.exports = () => async (ctx, next) => {
           firstName: first_name,
           lastName: last_name,
           picture,
-          providerId: id,
           provider: 'facebook',
         });
         await done(null, user);
