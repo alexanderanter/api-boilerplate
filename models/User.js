@@ -6,7 +6,6 @@ const schema = mongoose.Schema({
   email: String,
   picture: String,
   provider: String,
-  providerId: String,
   token: {
     IV: Buffer,
     encrypted: String,

@@ -12,7 +12,6 @@ class ContextUser {
    *     lastName = null,
    *     picture = null,
    *     provider = null,
-   *     providerId = null,
    *     _id = null,
    *     token = null,
    *   }
@@ -24,7 +23,6 @@ class ContextUser {
     lastName = null,
     picture = null,
     provider = null,
-    providerId = null,
     _id = null,
     token = null,
   }) {
@@ -33,7 +31,6 @@ class ContextUser {
     this.lastName = lastName;
     this.picture = picture;
     this.provider = provider;
-    this.providerId = providerId;
     this.token = token;
     this._id = _id;
   }
@@ -50,7 +47,6 @@ class ContextUser {
       lastName: this.lastName,
       picture: this.picture,
       provider: this.provider,
-      providerId: this.providerId,
     };
   }
 
@@ -66,7 +62,6 @@ class ContextUser {
       email: this.email,
       picture: this.picture,
       provider: this.provider,
-      providerId: this.providerId,
       token: this.token,
     };
   }
