@@ -4,17 +4,17 @@ const FacebookTokenStrategy = require('passport-facebook-token');
 const CustomStrategy = require('passport-custom');
 const config = require('config');
 
-const googleConfig = config.get('google');
-const facebookConfig = config.get('facebook');
-const { PASSWORDLESS_EMAIL } = require('../constants');
 const { decrypt } = require('../lib/encryption');
 
 module.exports = () => async (ctx, next) => {
   const { ContextUser } = ctx.models;
+  const { GOOGLE, FACEBOOK } = ctx.constants.CONFIGS;
+  const googleConfig = config.get(GOOGLE);
+  const facebookConfig = config.get(FACEBOOK);
+
   await passport.use(
     new GoogleTokenStrategy(
       googleConfig,
-      // async (parsedToken, googleId, done) => {
       async (accessToken, refreshToken, profile, done) => {
         // eslint-disable-next-line
         const { email, given_name, family_name, picture } = profile._json;
@@ -23,12 +23,13 @@ module.exports = () => async (ctx, next) => {
           firstName: given_name,
           lastName: family_name,
           picture,
-          provider: 'google',
+          provider: GOOGLE,
         });
         await done(null, user);
       },
     ),
   );
+
   await passport.use(
     new FacebookTokenStrategy(
       facebookConfig,
@@ -41,16 +42,18 @@ module.exports = () => async (ctx, next) => {
           firstName: first_name,
           lastName: last_name,
           picture,
-          provider: 'facebook',
+          provider: FACEBOOK,
         });
         await done(null, user);
       },
     ),
   );
+
+  const { EMAIL } = ctx.constants.STRATEGIES;
+
   await passport.use(
-    PASSWORDLESS_EMAIL,
+    EMAIL,
     new CustomStrategy(async (req, done) => {
-      // Some stuff here
       const { User } = ctx.models;
       let contextUser;
       const hash = ctx.request.header.token;
@@ -77,5 +80,6 @@ module.exports = () => async (ctx, next) => {
       await done(null, contextUser);
     }),
   );
+
   await next();
 };

@@ -1,7 +1,9 @@
 const WebSocketServer = require('websocket').server;
 const config = require('config');
 
-const allowedOrigins = config.get('allowedOrigins');
+const { ALLOWED_ORIGINS } = require('../constants/CONFIGS');
+
+const allowedOrigins = config.get(ALLOWED_ORIGINS);
 const ACCEPTED_PROTOCOL = null;
 const connections = [];
 

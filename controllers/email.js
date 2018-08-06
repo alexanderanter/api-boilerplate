@@ -9,7 +9,7 @@ const send = async ctx => {
     await ctx.emailServer.send(subject, text, recipient, attachment);
     // TODO: Don't respond from this method
     ctx.body = {
-      message: 'Email successfully sent, check your inbox for login link.',
+      message: `Email successfully sent to ${recipient}, check your inbox for login link.`,
     };
   } catch (error) {
     ctx.throw(error);

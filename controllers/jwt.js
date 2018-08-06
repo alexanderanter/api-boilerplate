@@ -1,14 +1,12 @@
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
-const { secret } = config.get('jwt');
-
 /**
  * Creates a JSON Web Token based on the user object
  *
  * @param {*} user
  */
-const createToken = user =>
+const createToken = (user, secret) =>
   jwt.sign(
     {
       _id: user._id,
@@ -30,8 +28,10 @@ const createToken = user =>
  * @param {*} next
  */
 const encode = async (ctx, next) => {
+  const { JWT } = ctx.constants.CONFIGS;
+  const { secret } = config.get(JWT);
   try {
-    ctx.token = createToken(ctx.user.getForJWT());
+    ctx.token = createToken(ctx.user.getForJWT(), secret);
     await next();
   } catch (error) {
     // TODO: Better error
@@ -57,6 +57,8 @@ const send = async ctx => {
  * @param {*} next
  */
 const decode = async (ctx, next) => {
+  const { JWT } = ctx.constants.CONFIGS;
+  const { secret } = config.get(JWT);
   let { token } = ctx.request.body;
   if (!token) {
     token = ctx.get('x-auth-token');

@@ -19,9 +19,17 @@ const init = require('./lib/init');
 const routes = require('./routes');
 const socket = require('./socket');
 
-const WS_CONNECTION = 'request';
+// Only place constants need to be required as they have not yet been loaded on the app context.
+const {
+  MONGOOSE,
+  WS_CONNECTION,
+  STANDARD_PORT,
+  STATIC_FOLDER,
+  DEVELOPMENT,
+} = require('./constants/CONFIGS');
 
-const { uri, options } = config.get('mongoose');
+const { uri, options } = config.get(MONGOOSE);
+
 mongoose.connect(
   uri,
   options,
@@ -38,7 +46,7 @@ app.use(errorHandling());
 app.use(bouncer.middleware());
 
 // static
-app.use(koaStatic(path.resolve(__dirname, './public')));
+app.use(koaStatic(path.resolve(__dirname, STATIC_FOLDER)));
 
 // middleware
 app.use(
@@ -49,15 +57,17 @@ app.use(
 );
 app.use(helmet());
 app.use(cors());
-if (app.env === 'development') {
+if (app.env === DEVELOPMENT) {
   app.use(logger());
 }
 
+init(app);
+
 // Email server
 app.context.emailServer = emailServer;
-app.context.emailServer.connect();
+app.context.emailServer.connect(app);
 
-// Passport must come after passwordless init and emailServer connect
+// Passport must come after emailServer connect
 app.use(passport.initialize());
 app.use(passportConfig());
 
@@ -69,18 +79,19 @@ ws.on(WS_CONNECTION, req => {
   }
 });
 
-init(app);
 routes(app);
 
+const { ERROR, SERVER_ERROR, LISTENING_ON } = app.constants.EVENTS;
+
 // error log
-app.on('error', (err, ctx) => {
+app.on(ERROR, (err, ctx) => {
   // eslint-disable-next-line
-  console.error('server error', err, ctx);
+  console.error(SERVER_ERROR, err, ctx);
 });
 
 if (!module.parent) {
-  const port = process.env.PORT || '8080';
+  const port = process.env.PORT || STANDARD_PORT;
   server.listen(port);
   // eslint-disable-next-line
-  console.log('Listening on ' + port);
+  console.log(LISTENING_ON + port);
 }
