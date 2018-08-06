@@ -17,7 +17,8 @@
   ],
   "scripts": {
     "start": "nodemon app/index.js",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "test": "mocha --timeout 10000"
   },
   "lint-staged": {
     "*.js": [
@@ -55,6 +56,8 @@
     "websocket": "^1.0.26"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.9.0",
@@ -68,6 +71,7 @@
     "eslint-plugin-standard": "^3.0.1",
     "husky": "^0.14.3",
     "lint-staged": "^7.2.0",
+    "mocha": "^5.2.0",
     "prettier": "^1.14.0"
   }
 }

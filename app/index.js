@@ -95,3 +95,5 @@ if (!module.parent) {
   // eslint-disable-next-line
   console.log(LISTENING_ON + port);
 }
+
+module.exports = app;
