@@ -16,7 +16,7 @@
     "api"
   ],
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "nodemon app/index.js",
     "precommit": "lint-staged"
   },
   "lint-staged": {
