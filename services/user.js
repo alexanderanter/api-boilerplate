@@ -3,5 +3,5 @@ module.exports = {
     const { User } = ctx.models;
     const count = await User.count();
     return count;
-  }
+  },
 };
