@@ -5,9 +5,7 @@ const cors = require('@koa/cors');
 const koaBody = require('koa-body');
 const koaStatic = require('koa-static');
 const path = require('path');
-const config = require('config');
 const bouncer = require('koa-bouncer');
-const mongoose = require('mongoose');
 const passport = require('koa-passport');
 const http = require('http');
 
@@ -18,29 +16,18 @@ const emailServer = require('./lib/emailServer');
 const init = require('./lib/init');
 const routes = require('./routes');
 const socket = require('./socket');
+const db = require('./lib/db');
 
-// Only place constants need to be required as they have not yet been loaded on the app context.
 const {
-  MONGOOSE,
   WS_CONNECTION,
   STANDARD_PORT,
   STATIC_FOLDER,
   DEVELOPMENT,
 } = require('./constants/CONFIGS');
 
-const { uri, options } = config.get(MONGOOSE);
-
-const dbConn = mongoose.connect(
-  uri,
-  options,
-);
-
 const app = new Koa();
 const server = http.createServer(app.callback());
 const ws = socket.init(server);
-
-app.mongoose = mongoose;
-app.dbConn = dbConn;
 
 // error handling
 app.use(errorHandling());
@@ -71,6 +58,7 @@ app.context.emailServer = emailServer;
 app.context.emailServer.connect(app);
 
 // Passport must come after emailServer connect
+app.use(db.connect());
 app.use(passport.initialize());
 app.use(passportConfig());
 
