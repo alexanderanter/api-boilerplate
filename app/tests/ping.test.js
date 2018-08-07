@@ -1,27 +1,21 @@
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = 'testing';
 
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-
+const request = require('supertest');
 const app = require('../index');
 
-const should = chai.should();
+describe('Test Ping route', async () => {
+  it('GET /ping should respond with Pong!', async done => {
+    const res = await request(app.callback()).get('/ping');
+    expect(res).toBeDefined();
+    expect(res.status).toEqual(200);
+    expect(JSON.parse(res.text)).toEqual({ message: 'Pong!' });
+    done();
+  });
 
-chai.use(chaiHttp);
-
-describe('Ping', () => {
-  describe('GET /ping', () => {
-    it('it should respond with Pong!', done => {
-      chai
-        .request(app)
-        .get('/ping')
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a('object');
-          res.body.should.have.property('message');
-          res.body.message.should.equal('pong');
-          done();
-        });
-    });
+  afterAll(async () => {
+    const { mongoose, dbConn } = app;
+    await mongoose.connection.close();
+    await dbConn.close();
+    await mongoose.disconnect();
   });
 });

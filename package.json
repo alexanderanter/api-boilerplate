@@ -18,7 +18,8 @@
   "scripts": {
     "start": "nodemon app/index.js",
     "precommit": "lint-staged",
-    "test": "mocha --timeout 10000"
+    "test": "jest --detectOpenHandles",
+    "coverage": "jest --collectCoverageFrom=app/**.js --coverage /app"
   },
   "lint-staged": {
     "*.js": [
@@ -56,13 +57,12 @@
     "websocket": "^1.0.26"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
-    "chai-http": "^4.0.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jest": "^21.18.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-node": "^6.0.0",
     "eslint-plugin-prettier": "^2.6.2",
@@ -70,8 +70,9 @@
     "eslint-plugin-react": "^7.10.0",
     "eslint-plugin-standard": "^3.0.1",
     "husky": "^0.14.3",
+    "jest": "^23.4.2",
     "lint-staged": "^7.2.0",
-    "mocha": "^5.2.0",
-    "prettier": "^1.14.0"
+    "prettier": "^1.14.0",
+    "supertest": "^3.1.0"
   }
 }

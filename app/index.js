@@ -30,7 +30,7 @@ const {
 
 const { uri, options } = config.get(MONGOOSE);
 
-mongoose.connect(
+const dbConn = mongoose.connect(
   uri,
   options,
 );
@@ -38,6 +38,9 @@ mongoose.connect(
 const app = new Koa();
 const server = http.createServer(app.callback());
 const ws = socket.init(server);
+
+app.mongoose = mongoose;
+app.dbConn = dbConn;
 
 // error handling
 app.use(errorHandling());
