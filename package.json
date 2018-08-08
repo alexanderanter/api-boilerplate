@@ -18,7 +18,7 @@
   "scripts": {
     "start": "nodemon app/index.js",
     "precommit": "lint-staged",
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --forceExit",
     "coverage": "jest --collectCoverageFrom=app/**.js --coverage /app"
   },
   "lint-staged": {
