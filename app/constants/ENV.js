@@ -1,4 +1,4 @@
-const TEST = 'testing';
+const TEST = 'test';
 
 module.exports = {
   TEST,
