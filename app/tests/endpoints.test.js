@@ -1,22 +1,43 @@
-process.env.NODE_ENV = 'testing';
+process.env.NODE_ENV = 'test';
 
 const request = require('supertest');
-const app = require('../index');
 
-describe('Test routes endpoints', async () => {
-  // let connection =
+const { app, server } = require('../index');
+const db = require('../lib/db');
+
+describe('Test routes endpoints', () => {
+  const ctx = { mongoose: undefined };
+  const next = () => {};
+
   beforeAll(async () => {
-    // Stuff
+    try {
+      await db.connect()(ctx, next);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  afterEach(async () => {
+    try {
+      // await ctx.mongoose.disconnect();
+      // await ctx.dbConnection.disconnect();
+      await db.disconnect();
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   afterAll(async () => {
-    const { mongoose, dbConn } = app;
-    await mongoose.connection.close();
-    await dbConn.close();
-    await mongoose.disconnect();
+    try {
+      await db.disconnect();
+      await server.close();
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   it('GET /ping should respond with Pong!', async done => {
+    expect.assertions(3);
     const res = await request(app.callback()).get('/ping');
     expect(res).toBeDefined();
     expect(res.status).toEqual(200);
