@@ -29,6 +29,8 @@ const app = new Koa();
 const server = http.createServer(app.callback());
 const ws = socket.init(server);
 
+app.use(db.connect());
+
 // error handling
 app.use(errorHandling());
 
@@ -58,7 +60,6 @@ app.context.emailServer = emailServer;
 app.context.emailServer.connect(app);
 
 // Passport must come after emailServer connect
-app.use(db.connect());
 app.use(passport.initialize());
 app.use(passportConfig());
 
@@ -84,7 +85,7 @@ if (!module.parent) {
   const port = process.env.PORT || STANDARD_PORT;
   server.listen(port);
   // eslint-disable-next-line
-  console.log(LISTENING_ON + port);
+  console.log(`${LISTENING_ON} port: ${port}`);
 }
 
-module.exports = app;
+module.exports = { app, server };

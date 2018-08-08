@@ -1,28 +1,31 @@
 const mongoose = require('mongoose');
 const config = require('config');
 
-const { NODE_ENV } = process.env;
-
 const { MONGOOSE } = require('../constants/CONFIGS');
-const { TEST } = require('../constants/ENV');
 
 const { uri, options } = config.get(MONGOOSE);
+
+let connection = null;
 
 module.exports = {
   /**
    * Establishes connection to the database
    * Adds dbConnection to the context
-   * @param {*} app
+   * @param {*} ctx
+   * @param {*} next
    */
   connect: () => async (ctx, next) => {
-    if (NODE_ENV === TEST) {
-      ctx.dbConnection = null;
-    } else {
-      ctx.dbConnection = await mongoose.connect(
-        uri,
-        options,
-      );
-    }
+    connection = await mongoose.connect(
+      uri,
+      options,
+    );
+    ctx.mongoose = mongoose;
+    ctx.dbConnection = connection;
     await next();
+  },
+  disconnect: async () => {
+    const { connections } = mongoose;
+    await connections.forEach(conn => conn.close());
+    await mongoose.disconnect();
   },
 };
