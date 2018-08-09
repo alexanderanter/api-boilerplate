@@ -19,8 +19,6 @@ describe('Test routes endpoints', () => {
 
   afterEach(async () => {
     try {
-      // await ctx.mongoose.disconnect();
-      // await ctx.dbConnection.disconnect();
       await db.disconnect();
     } catch (error) {
       console.log(error);
