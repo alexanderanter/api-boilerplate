@@ -17,4 +17,5 @@ module.exports = function(app, router) {
    *
    */
   router.get('/ping', ping.pong);
+  router.get('/test/error', ping.error);
 };

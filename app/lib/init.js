@@ -17,6 +17,7 @@ const initSchedules = (app, schedules) => {
 module.exports = function init(app) {
   app.controllers = load('controllers');
   app.models = load('models');
+  app.errors = load('errors');
   app.services = load('services');
   app.constants = load('constants');
   // init schedules
@@ -24,6 +25,7 @@ module.exports = function init(app) {
   initSchedules(app, schedules);
   const { context } = app;
   context.models = app.models;
+  context.errors = app.errors;
   context.services = app.services;
   context.constants = app.constants;
 };

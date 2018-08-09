@@ -12,7 +12,8 @@ const send = async ctx => {
       message: `Email successfully sent to ${recipient}, check your inbox for login link.`,
     };
   } catch (error) {
-    ctx.throw(error);
+    const { InternalServerError } = ctx.errors.ServerErrors;
+    ctx.throw(new InternalServerError());
   }
 };
 

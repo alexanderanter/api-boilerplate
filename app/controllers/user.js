@@ -9,7 +9,12 @@ const create = async ctx => {
   const user = ctx.user.getForDB();
   const userModel = await new User(user);
   await userModel.save(err => {
-    if (err) ctx.throw(err);
+    if (err) {
+      // TODO: Error logging
+      console.log(err);
+      const { InternalServerError } = ctx.errors.ServerErrors;
+      ctx.throw(new InternalServerError());
+    }
   });
   ctx.user = new ContextUser(userModel);
 };
@@ -28,13 +33,19 @@ const match = async (ctx, next) => {
     'firstName lastName email _id picture provider',
     async (err, user) => {
       if (err) {
-        ctx.throw(err);
+        // TODO: Error logging
+        console.log(err);
+        const { InternalServerError } = ctx.errors.ServerErrors;
+        ctx.throw(new InternalServerError());
       } else if (!user) {
         try {
           await create(ctx);
           await next();
         } catch (error) {
-          ctx.throw(error);
+          // TODO: Error logging
+          console.log(error);
+          const { InternalServerError } = ctx.errors.ServerErrors;
+          ctx.throw(new InternalServerError());
         }
       } else if (user) {
         ctx.user = new ContextUser(user);
@@ -88,7 +99,10 @@ const saveEmailToken = async (ctx, next) => {
   const { encrypted } = ctx;
   await User.updateOne({ email }, { token: encrypted }, async (err, res) => {
     if (err) {
-      ctx.throw(err);
+      // TODO: Error logging
+      console.log(err);
+      const { InternalServerError } = ctx.errors.ServerErrors;
+      ctx.throw(new InternalServerError());
     }
     if (res.nModified === 0) {
       ctx.user = new ContextUser({

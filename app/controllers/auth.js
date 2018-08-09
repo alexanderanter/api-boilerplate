@@ -13,8 +13,8 @@ const google = async (ctx, next) => {
   const { GOOGLE } = ctx.constants.STRATEGIES;
   await passport.authenticate(GOOGLE, async (err, user, info) => {
     if (err || info) {
-      // eslint-disable-next-line
-      //TODO: Better errors
+      // Google returns info on unseccessful sign in attempt
+      // TODO: Better errors
       if (info) ctx.throw(info);
       ctx.throw(err);
     }
@@ -34,7 +34,6 @@ const facebook = async (ctx, next) => {
   const { FACEBOOK } = ctx.constants.STRATEGIES;
   await passport.authenticate(FACEBOOK, async (err, user, info) => {
     if (err || info) {
-      // Google returns info on unseccessful sign in attempt
       // TODO: Better errors
       if (info) ctx.throw(info);
       ctx.throw(err);
@@ -78,10 +77,10 @@ const verifyEmailToken = async (ctx, next) => {
   const { EMAIL } = ctx.constants.STRATEGIES;
   await passport.authenticate(EMAIL, async (err, user, info) => {
     if (err || info) {
-      // TODO: Better errors
+      const { Forbidden } = ctx.errors.ClientErrors.Forbidden();
       // info here returns if no user is found (token non existant) or token is expired
-      if (info) ctx.throw(info);
-      ctx.throw(err);
+      if (info) ctx.throw(new Forbidden());
+      ctx.throw(new Forbidden());
     }
     const { ContextUser } = ctx.models;
     ctx.user = new ContextUser(user);

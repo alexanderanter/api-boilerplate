@@ -34,8 +34,8 @@ const encode = async (ctx, next) => {
     ctx.token = createToken(ctx.user.getForJWT(), secret);
     await next();
   } catch (error) {
-    // TODO: Better error
-    ctx.throw(error);
+    const { InternalServerError } = ctx.errors.ServerErrors;
+    ctx.throw(new InternalServerError());
   }
 };
 
@@ -66,8 +66,8 @@ const decode = async (ctx, next) => {
   try {
     ctx.decoded = jwt.verify(token, secret);
   } catch (err) {
-    // TODO: Better error
-    ctx.throw(err);
+    const { Forbidden } = ctx.errors.ClientErrors;
+    ctx.throw(new Forbidden());
   }
   await next();
 };

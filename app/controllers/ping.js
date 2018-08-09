@@ -45,7 +45,8 @@ const socket = async ctx => {
  * @param {*} ctx
  */
 const error = async ctx => {
-  ctx.throw('Ping error');
+  console.log(ctx.errors);
+  ctx.throw(new ctx.errors.ClientErrors.BadRequest());
 };
 
 module.exports = {
