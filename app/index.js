@@ -8,6 +8,7 @@ const path = require('path');
 const bouncer = require('koa-bouncer');
 const passport = require('koa-passport');
 const http = require('http');
+const send = require('koa-send');
 
 const errorHandling = require('./middlewares/error-handling');
 const passportConfig = require('./middlewares/passport');
@@ -22,13 +23,14 @@ const {
   WS_CONNECTION,
   STANDARD_PORT,
   STATIC_FOLDER,
-  UPLOADS_FOLDER,
   DEVELOPMENT,
 } = require('./constants/CONFIG');
 
 const app = new Koa();
 const server = http.createServer(app.callback());
 const ws = socket.init(server);
+
+app.context.send = send;
 
 app.use(db.connect());
 
@@ -46,9 +48,6 @@ app.use(
   koaBody({
     json: true,
     strict: false,
-    formidable: { uploadDir: UPLOADS_FOLDER },
-    multipart: true,
-    urlencoded: true,
   }),
 );
 app.use(helmet());
