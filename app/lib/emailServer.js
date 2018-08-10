@@ -9,7 +9,7 @@ module.exports = {
    * @param {*} app
    */
   connect(app) {
-    const { EMAIL_SERVER } = app.constants.CONFIGS;
+    const { EMAIL_SERVER } = app.constants.CONFIG;
     const { user, password, host, ssl } = config.get(EMAIL_SERVER);
     connection = emailjs.server.connect({
       user,

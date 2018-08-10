@@ -8,7 +8,7 @@ const { decrypt } = require('../lib/encryption');
 
 module.exports = () => async (ctx, next) => {
   const { ContextUser } = ctx.models;
-  const { GOOGLE, FACEBOOK } = ctx.constants.CONFIGS;
+  const { GOOGLE, FACEBOOK } = ctx.constants.CONFIG;
   const googleConfig = config.get(GOOGLE);
   const facebookConfig = config.get(FACEBOOK);
 

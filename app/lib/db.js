@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const config = require('config');
 
-const { MONGOOSE } = require('../constants/CONFIGS');
+const { MONGOOSE } = require('../constants/CONFIG');
 
 const { uri, options } = config.get(MONGOOSE);
 

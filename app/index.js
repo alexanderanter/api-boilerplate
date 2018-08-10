@@ -24,7 +24,7 @@ const {
   STATIC_FOLDER,
   UPLOADS_FOLDER,
   DEVELOPMENT,
-} = require('./constants/CONFIGS');
+} = require('./constants/CONFIG');
 
 const app = new Koa();
 const server = http.createServer(app.callback());

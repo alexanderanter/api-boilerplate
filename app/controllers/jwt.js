@@ -28,7 +28,7 @@ const createToken = (user, secret) =>
  * @param {*} next
  */
 const encode = async (ctx, next) => {
-  const { JWT } = ctx.constants.CONFIGS;
+  const { JWT } = ctx.constants.CONFIG;
   const { secret } = config.get(JWT);
   try {
     ctx.token = createToken(ctx.user.getForJWT(), secret);
@@ -57,7 +57,7 @@ const send = async ctx => {
  * @param {*} next
  */
 const decode = async (ctx, next) => {
-  const { JWT } = ctx.constants.CONFIGS;
+  const { JWT } = ctx.constants.CONFIG;
   const { secret } = config.get(JWT);
   let { token } = ctx.request.body;
   if (!token) {
