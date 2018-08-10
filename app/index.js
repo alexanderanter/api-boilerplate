@@ -22,6 +22,7 @@ const {
   WS_CONNECTION,
   STANDARD_PORT,
   STATIC_FOLDER,
+  UPLOADS_FOLDER,
   DEVELOPMENT,
 } = require('./constants/CONFIGS');
 
@@ -45,6 +46,9 @@ app.use(
   koaBody({
     json: true,
     strict: false,
+    formidable: { uploadDir: UPLOADS_FOLDER },
+    multipart: true,
+    urlencoded: true,
   }),
 );
 app.use(helmet());
