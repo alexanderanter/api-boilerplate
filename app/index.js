@@ -8,6 +8,7 @@ const bouncer = require('koa-bouncer');
 const passport = require('koa-passport');
 const http = require('http');
 const send = require('koa-send');
+const memwatch = require('memwatch-next');
 
 const errorHandling = require('./middlewares/error-handling');
 const passportConfig = require('./middlewares/passport');
@@ -85,3 +86,7 @@ if (!module.parent) {
 }
 
 module.exports = { app, server };
+memwatch.on('leak', info => {
+  // eslint-disable-next-line
+  console.log(info);
+});
