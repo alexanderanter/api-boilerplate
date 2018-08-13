@@ -8,7 +8,7 @@ const logDir = path.resolve(__dirname, '../../logs');
 const { NODE_ENV } = process.env;
 
 if (!fs.existsSync(logDir)) {
-  fs.mkdir(logDir);
+  fs.mkdir(logDir, () => {});
 }
 
 const loggerOptions = () =>
