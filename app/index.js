@@ -1,5 +1,4 @@
 const Koa = require('koa');
-const logger = require('koa-logger');
 const helmet = require('koa-helmet');
 const cors = require('@koa/cors');
 const koaBody = require('koa-body');
@@ -12,6 +11,7 @@ const send = require('koa-send');
 
 const errorHandling = require('./middlewares/error-handling');
 const passportConfig = require('./middlewares/passport');
+const logging = require('./middlewares/logging');
 
 const emailServer = require('./lib/emailServer');
 const init = require('./lib/init');
@@ -23,7 +23,6 @@ const {
   WS_CONNECTION,
   STANDARD_PORT,
   STATIC_FOLDER,
-  DEVELOPMENT,
 } = require('./constants/CONFIG');
 
 const app = new Koa();
@@ -33,6 +32,9 @@ const ws = socket.init(server);
 app.context.send = send;
 
 app.use(db.connect());
+
+// Logging
+app.use(logging());
 
 // error handling
 app.use(errorHandling());
@@ -52,9 +54,6 @@ app.use(
 );
 app.use(helmet());
 app.use(cors());
-if (app.env === DEVELOPMENT) {
-  app.use(logger());
-}
 
 init(app);
 
@@ -76,19 +75,13 @@ ws.on(WS_CONNECTION, req => {
 
 routes(app);
 
-const { ERROR, SERVER_ERROR, LISTENING_ON } = app.constants.EVENTS;
-
-// error log
-app.on(ERROR, (err, ctx) => {
-  // eslint-disable-next-line
-  console.error(SERVER_ERROR, err, ctx);
-});
+const { LISTENING_ON } = app.constants.EVENTS;
 
 if (!module.parent) {
   const port = process.env.PORT || STANDARD_PORT;
   server.listen(port);
   // eslint-disable-next-line
-  console.log(`${LISTENING_ON} port: ${port}`);
+  console.log(`${LISTENING_ON}: ${port}`);
 }
 
 module.exports = { app, server };

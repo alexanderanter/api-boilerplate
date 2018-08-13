@@ -13,9 +13,6 @@ module.exports = function errorHandling() {
           break;
         default:
           ctx.status = err.statusCode || err.status || 500;
-          if (ctx.status === 500) {
-            ctx.app.emit('error', err, ctx);
-          }
           break;
       }
       if (err.headers) {
