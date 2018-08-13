@@ -26,5 +26,5 @@ const loggerOptions = () =>
 module.exports = () =>
   logger(
     loggerOptions(),
-    NODE_ENV !== DEVELOPMENT && pino.destination(`${logDir}/app.log`),
+    NODE_ENV !== DEVELOPMENT && pino.destination(`${logDir}/log.json`),
   );
