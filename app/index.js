@@ -12,7 +12,7 @@ const memwatch = require('memwatch-next');
 
 const errorHandling = require('./middlewares/error-handling');
 const passportConfig = require('./middlewares/passport');
-const logging = require('./middlewares/logging');
+const { logging, log } = require('./middlewares/logging');
 
 const emailServer = require('./lib/emailServer');
 const init = require('./lib/init');
@@ -85,8 +85,8 @@ if (!module.parent) {
   console.log(`${LISTENING_ON}: ${port}`);
 }
 
-module.exports = { app, server };
-memwatch.on('leak', info => {
-  // eslint-disable-next-line
-  console.log(info);
+memwatch.on('leak', data => {
+  log.logger.fatal(data);
 });
+
+module.exports = { app, server };
