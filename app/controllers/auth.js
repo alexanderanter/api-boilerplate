@@ -77,7 +77,7 @@ const verifyEmailToken = async (ctx, next) => {
   const { EMAIL } = ctx.constants.STRATEGIES;
   await passport.authenticate(EMAIL, async (err, user, info) => {
     if (err || info) {
-      const { Forbidden } = ctx.errors.ClientErrors.Forbidden();
+      const { Forbidden } = ctx.errors.ClientErrors;
       // info here returns if no user is found (token non existant) or token is expired
       if (info) ctx.throw(new Forbidden());
       ctx.throw(new Forbidden());
