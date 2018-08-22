@@ -15,6 +15,15 @@ class EncryptedObject {
     this.encrypted = encrypted;
     this.tag = tag;
   }
+
+  getAsObject() {
+    return {
+      IV: this.IV,
+      encrypted: this.encrypted,
+      tag: this.tag,
+      hash: this.hash,
+    };
+  }
 }
 
 /**

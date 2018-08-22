@@ -62,7 +62,7 @@ class ContextUser {
       email: this.email,
       picture: this.picture,
       provider: this.provider,
-      token: this.token,
+      token: this.token.getAsObject(),
     };
   }
 
