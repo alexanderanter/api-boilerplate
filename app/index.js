@@ -12,7 +12,7 @@ const memwatch = require('memwatch-next');
 
 const errorHandling = require('./middlewares/error-handling');
 const passportConfig = require('./middlewares/passport');
-const { logging, log } = require('./middlewares/logging');
+const log = require('./middlewares/logging');
 
 const emailServer = require('./lib/emailServer');
 const init = require('./lib/init');
@@ -35,7 +35,7 @@ app.context.send = send;
 app.use(db.connect());
 
 // Logging
-app.use(logging());
+app.use(log());
 
 // error handling
 app.use(errorHandling());
