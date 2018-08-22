@@ -67,6 +67,7 @@ module.exports = () => async (ctx, next) => {
             await done(null, null, 'No user found!');
           } else {
             contextUser = new ContextUser(user);
+            User.update(user, { $unset: { token: 1 } });
           }
         },
       );
