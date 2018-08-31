@@ -32,7 +32,7 @@ const ws = socket.init(server);
 
 app.context.send = send;
 
-app.use(db.connect());
+db.connect();
 
 // Logging
 app.use(log());

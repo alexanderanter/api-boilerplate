@@ -14,15 +14,13 @@ module.exports = {
    * @param {*} ctx
    * @param {*} next
    */
-  connect: () => async (ctx, next) => {
+  connect: async () => {
     connection = await mongoose.connect(
       uri,
       options,
     );
-    ctx.mongoose = mongoose;
-    ctx.dbConnection = connection;
-    await next();
   },
+  connection,
   disconnect: async () => {
     const { connections } = mongoose;
     await connections.forEach(conn => conn.close());
