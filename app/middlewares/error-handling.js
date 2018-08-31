@@ -1,11 +1,14 @@
 const { ValidationError } = require('koa-bouncer');
 const statuses = require('statuses');
 
+const log = require('./logging')();
+
 module.exports = function errorHandling() {
   return async (ctx, next) => {
     try {
       await next();
     } catch (err) {
+      log.logger.error(err);
       // will only respond with JSON
       switch (err) {
         case ValidationError:
