@@ -1,8 +1,12 @@
 const crypto = require('crypto');
 
 const algorithm = 'aes-256-gcm';
-const sessionSecret = process.env.SESSION_SECRET;
-const key = Buffer.from(sessionSecret, 'utf8');
+const { SESSION_SECRET } = process.env;
+const key = crypto
+  .createHash('sha256')
+  .update(String(SESSION_SECRET))
+  .digest('base64')
+  .substr(0, 32);
 
 /**
  * Encrypted object class
