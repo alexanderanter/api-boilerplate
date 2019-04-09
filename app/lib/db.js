@@ -7,6 +7,9 @@ const { uri, options } = config.get(MONGOOSE);
 
 let connection = null;
 
+mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
+
 module.exports = {
   /**
    * Establishes connection to the database
@@ -15,10 +18,19 @@ module.exports = {
    * @param {*} next
    */
   connect: async () => {
-    connection = await mongoose.connect(
-      uri,
-      options,
-    );
+    try {
+      if (!connection) {
+        connection = await mongoose.connect(
+          uri,
+          {
+            useNewUrlParser: true,
+            ...options,
+          },
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
   },
   connection,
   disconnect: async () => {

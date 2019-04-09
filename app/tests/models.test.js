@@ -4,11 +4,9 @@ const db = require('../lib/db');
 const User = require('../models/User');
 
 describe('Test routes endpoints', () => {
-  const ctx = { mongoose: undefined };
-  const next = () => {};
   beforeAll(async () => {
     try {
-      await db.connect()(ctx, next);
+      await db.connect();
     } catch (error) {
       console.log(error);
     }

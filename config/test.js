@@ -5,12 +5,12 @@ module.exports = {
     uri: MONGO_DB_URI,
   },
   facebook: {
-    clientID: process.env.FACEBOOK_APP_ID,
-    clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+    clientID: process.env.FACEBOOK_APP_ID || '123456',
+    clientSecret: process.env.FACEBOOK_CLIENT_SECRET || 'keyboardcat',
   },
   google: {
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    clientID: process.env.GOOGLE_CLIENT_ID || '123456',
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'keyboardcat',
     authorizationURL: 'https://accounts.google.com/o/oauth2/v2/auth',
     tokenURL: 'https://accounts.google.com/o/oauth2/token',
   },
@@ -33,4 +33,7 @@ module.exports = {
     'http://0.0.0.0:3000',
     'http://127.0.0.0:3000',
   ],
+  logging: {
+    level: 'trace',
+  },
 };
