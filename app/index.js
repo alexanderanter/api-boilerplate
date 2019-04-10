@@ -86,7 +86,7 @@ if (!module.parent) {
 }
 
 memwatch.on('leak', data => {
-  log.logger.fatal(data);
+  log().logger.fatal(data);
 });
 
 module.exports = { app, server };
