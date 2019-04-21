@@ -1,9 +1,12 @@
-import * as passport from 'koa-passport';
-import * as config from 'config';
-import { Context } from 'koa';
+import passport from 'koa-passport';
+import config from 'config';
+import { ParameterizedContext as Context } from 'koa';
 
 import { encrypt, sha256 } from '../lib/encryption';
 import ContextUser from '../models/ContextUser';
+
+import { GOOGLE, FACEBOOK, EMAIL } from '../constants/STRATEGIES';
+import * as ClientErrors from '../errors/ClientErrors';
 
 /**
  * Authentication with Google token
@@ -12,7 +15,6 @@ import ContextUser from '../models/ContextUser';
  * @param {*} next
  */
 export const google = async (ctx: Context, next: any) => {
-  const { GOOGLE } = ctx.constants.STRATEGIES;
   await passport.authenticate(GOOGLE, async (err, user, info) => {
     if (err || info) {
       // Google returns info on unseccessful sign in attempt
@@ -32,7 +34,6 @@ export const google = async (ctx: Context, next: any) => {
  * @param {*} next
  */
 export const facebook = async (ctx: Context, next: any) => {
-  const { FACEBOOK } = ctx.constants.STRATEGIES;
   await passport.authenticate(FACEBOOK, async (err, user, info) => {
     if (err || info) {
       // TODO: Better errors
@@ -54,7 +55,6 @@ export const facebook = async (ctx: Context, next: any) => {
  */
 export const createEmailToken = async (ctx: Context, next: any) => {
   const { email } = ctx.request.body;
-  const { EMAIL } = ctx.constants.STRATEGIES;
   const { client } = config.get(EMAIL);
   const timestamp = Date.now();
   ctx.encrypted = encrypt(JSON.stringify({ email, timestamp }));
@@ -78,10 +78,9 @@ export const verifyEmailToken = async (
   ctx: Context,
   next: () => Promise<any>,
 ) => {
-  const { EMAIL } = ctx.constants.STRATEGIES;
   await passport.authenticate(EMAIL, async (err, user, info) => {
     if (err || info) {
-      const { Forbidden } = ctx.errors.ClientErrors;
+      const { Forbidden } = ClientErrors;
       // info here returns if no user is found (token non existant) or token is expired
       if (info) ctx.throw(new Forbidden());
       ctx.throw(new Forbidden());

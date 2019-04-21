@@ -1,8 +1,9 @@
-import * as schedule from 'node-schedule';
+import schedule from 'node-schedule';
+import Koa from 'koa';
 import { load } from './util';
 import { KoaApp } from '../interfaces/iKoa';
 
-const initSchedules = (app: KoaApp, schedules: Array<any>) => {
+const initSchedules = (app: Koa, schedules: Array<any>) => {
   Object.values(schedules).forEach(item => {
     if (item.cron && typeof item.run === 'function') {
       schedule.scheduleJob(item.cron, item.run.bind(app));

@@ -1,17 +1,16 @@
 import { ValidationError } from 'koa-bouncer';
-import * as statuses from 'statuses';
+import statuses from 'statuses';
 import { Context } from 'koa';
 import { NextFunction } from 'express';
 
-import * as Log from './logging';
+import Log from './logging';
 
 export default function errorHandling() {
-  const log = Log();
   return async (ctx: Context, next: NextFunction) => {
     try {
       await next();
     } catch (err) {
-      log.logger.error(err);
+      ctx.log.error(err);
       // will only respond with JSON
       switch (err) {
         case ValidationError:

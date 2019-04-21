@@ -1,8 +1,8 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as pino from 'pino';
-import * as logger from 'koa-pino-logger';
-import * as config from 'config';
+import fs from 'fs';
+import path from 'path';
+import pino from 'pino';
+import logger from 'koa-pino-logger';
+import config from 'config';
 
 import { DEVELOPMENT } from '../constants/CONFIG';
 
@@ -20,4 +20,4 @@ const log = logger(
   NODE_ENV !== DEVELOPMENT && pino.destination(`${logDir}/log.json`),
 );
 
-export = () => log;
+export default () => log;

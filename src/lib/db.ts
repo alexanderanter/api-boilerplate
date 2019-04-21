@@ -1,11 +1,11 @@
-import * as mongoose from 'mongoose';
-import * as config from 'config';
+import mongoose from 'mongoose';
+import config from 'config';
 
 const { uri, options } = config.get('mongoose');
 
 let connection: mongoose.Connection = null;
 
-export const db = {
+export default {
   /**
    * Establishes connection to the database
    * Adds dbConnection to the context

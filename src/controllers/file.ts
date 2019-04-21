@@ -1,4 +1,6 @@
-import { Context } from 'koa';
+import { ParameterizedContext as Context } from 'koa';
+import * as ClientErrors from '../errors/ClientErrors';
+import * as ServerErrors from '../errors/ServerErrors';
 
 export const upload = async (ctx: Context, next: Function) => {
   const { API_URL } = ctx.constants.CONFIG;
@@ -8,8 +10,8 @@ export const upload = async (ctx: Context, next: Function) => {
       message: `Successfully uploaded file to ${API_URL}/${file.path}`,
     };
   } catch (error) {
-    const { BadRequest } = ctx.errors.ClientErrors;
-    const { InternalServerError } = ctx.errors.ServerErrors;
+    const { BadRequest } = ClientErrors;
+    const { InternalServerError } = ServerErrors;
     if (
       error.message ===
       `Cannot destructure property \`file\` of 'undefined' or 'null'.`

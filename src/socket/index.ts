@@ -1,5 +1,5 @@
 import { server as WebSocketServer, connection, request } from 'websocket';
-import * as config from 'config';
+import config from 'config';
 import { Server } from 'http';
 
 const { ALLOWED_ORIGINS } = require('../constants/CONFIG');

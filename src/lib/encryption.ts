@@ -1,4 +1,4 @@
-import * as crypto from 'crypto';
+import crypto from 'crypto';
 
 const algorithm = 'aes-256-gcm';
 const { SESSION_SECRET } = process.env;

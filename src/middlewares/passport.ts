@@ -1,19 +1,21 @@
-import * as passport from 'koa-passport';
-import { Strategy as GoogleTokenStrategy } from 'passport-token-google';
-import * as FacebookTokenStrategy from 'passport-facebook-token';
-import * as CustomStrategy from 'passport-custom';
-import * as config from 'config';
+import passport from 'koa-passport';
+// import { Strategy as GoogleTokenStrategy } from 'passport-token-google';
+import FacebookTokenStrategy, { StrategyOptions }  from 'passport-facebook-token';
+// import CustomStrategy from 'passport-custom';
+const GoogleTokenStrategy = require('passport-token-google').Strategy;
+const CustomStrategy = require('passport-custom').Strategy;
+import config from 'config';
 
 import { decrypt } from '../lib/encryption';
-import { Context } from 'koa';
+import { ParameterizedContext as Context } from 'koa';
 import { NextFunction } from 'express';
 import { iUser } from '../models/User';
+import { GOOGLE, FACEBOOK } from '../constants/CONFIG';
+import { EMAIL } from '../constants/STRATEGIES';
 
 export default () => async (ctx: Context, next: NextFunction) => {
-  const { ContextUser } = ctx.models;
-  const { GOOGLE, FACEBOOK } = ctx.constants.CONFIG;
   const googleConfig = config.get(GOOGLE);
-  const facebookConfig = config.get(FACEBOOK);
+  const facebookConfig: StrategyOptions = config.get(FACEBOOK);
 
   await passport.use(
     new GoogleTokenStrategy(
@@ -61,8 +63,6 @@ export default () => async (ctx: Context, next: NextFunction) => {
       },
     ),
   );
-
-  const { EMAIL } = ctx.constants.STRATEGIES;
 
   await passport.use(
     EMAIL,

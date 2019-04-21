@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 
 export interface iUser extends mongoose.Document {
   firstName: string;
@@ -28,6 +28,4 @@ const schema: mongoose.Schema = new mongoose.Schema({
   },
 });
 
-const model = mongoose.model('User', schema);
-
-module.exports = model;
+export default mongoose.model('User', schema);

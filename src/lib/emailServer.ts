@@ -1,11 +1,11 @@
-import * as config from 'config';
-import * as emailjs from 'emailjs';
+import config from 'config';
+const emailjs = require('emailjs');
 
 import { EMAIL_SERVER } from '../constants/CONFIG';
 
 let connection: any = null;
 
-export = {
+export default {
   /**
    * Connects to the email server
    */

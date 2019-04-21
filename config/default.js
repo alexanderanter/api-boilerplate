@@ -22,4 +22,7 @@ module.exports = {
   jwt: {
     secret: process.env.JWT_SECRET,
   },
+  mongoose: {
+    options: { useNewUrlParser: true },
+  },
 };

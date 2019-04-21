@@ -1,6 +1,6 @@
-import * as Router from 'koa-router';
-import * as Koa from 'koa';
-import * as fs from 'fs';
+import Router from 'koa-router';
+import Koa from 'koa';
+import fs from 'fs';
 
 /**
  * Reads all routes within the routes dir and initializes the routes with app and router objects

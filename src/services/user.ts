@@ -1,6 +1,6 @@
 import { Context } from 'koa';
 
-import * as User from '../models/User.js';
+import User from '../models/User.js';
 
 export const count = async (ctx: Context) => {
   const count = await User.count();

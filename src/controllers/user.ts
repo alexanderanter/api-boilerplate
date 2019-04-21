@@ -1,5 +1,8 @@
-import { Context } from 'koa';
-import { iUser } from '../models/User';
+import { ParameterizedContext as Context } from 'koa';
+import User, { iUser } from '../models/User';
+import ContextUser from '../models/ContextUser';
+
+import * as ServerErrors from '../errors/ServerErrors';
 
 /**
  * Creates a User entry in the Database
@@ -15,7 +18,7 @@ export const create = async (ctx: Context) => {
     if (err) {
       // TODO: Error logging
       console.log(err);
-      const { InternalServerError } = ctx.errors.ServerErrors;
+      const { InternalServerError } = ServerErrors;
       ctx.throw(new InternalServerError());
     }
   });
@@ -38,7 +41,7 @@ export const match = async (ctx: Context, next: Function) => {
       if (err) {
         // TODO: Error logging
         console.log(err);
-        const { InternalServerError } = ctx.errors.ServerErrors;
+        const { InternalServerError } = ServerErrors;
         ctx.throw(new InternalServerError());
       } else if (!user) {
         try {
@@ -47,7 +50,7 @@ export const match = async (ctx: Context, next: Function) => {
         } catch (error) {
           // TODO: Error logging
           console.log(error);
-          const { InternalServerError } = ctx.errors.ServerErrors;
+          const { InternalServerError } = ServerErrors;
           ctx.throw(new InternalServerError());
         }
       } else if (user) {
@@ -98,7 +101,6 @@ export const list = async (ctx: Context) => {
  */
 export const saveEmailToken = async (ctx: Context, next: Function) => {
   const { email } = ctx.request.body;
-  const { User, ContextUser } = ctx.models;
   const { encrypted } = ctx;
   await User.updateOne(
     { email },
@@ -107,7 +109,7 @@ export const saveEmailToken = async (ctx: Context, next: Function) => {
       if (err) {
         // TODO: Error logging
         console.log(err);
-        const { InternalServerError } = ctx.errors.ServerErrors;
+        const { InternalServerError } = ServerErrors;
         ctx.throw(new InternalServerError());
       }
       if (res.nModified === 0) {

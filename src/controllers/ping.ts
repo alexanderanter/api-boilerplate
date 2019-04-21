@@ -1,4 +1,6 @@
-import { Context } from 'koa';
+import { ParameterizedContext as Context } from 'koa';
+
+import * as ClientErrors from '../errors/ClientErrors';
 
 /**
  * Pong!
@@ -47,8 +49,8 @@ export const socket = async (ctx: Context) => {
  * @param {*} ctx
  */
 export const error = async (ctx: Context) => {
-  console.log(ctx.errors);
-  ctx.throw(new ctx.errors.ClientErrors.BadRequest());
+  const { BadRequest } = ClientErrors;
+  ctx.throw(new BadRequest());
 };
 
 export default {

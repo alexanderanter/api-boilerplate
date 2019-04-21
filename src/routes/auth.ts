@@ -1,8 +1,8 @@
 import * as Router from 'koa-router';
-import * as auth from '../controllers/auth';
-import * as jwt from '../controllers/jwt';
-import * as user from '../controllers/user';
-import * as email from '../controllers/email';
+import auth from '../controllers/auth';
+import jwt from '../controllers/jwt';
+import user from '../controllers/user';
+import email from '../controllers/email';
 
 export = (router: Router) => {
   /**

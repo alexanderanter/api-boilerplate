@@ -1,5 +1,5 @@
-import * as path from 'path';
-import * as fs from 'fs-extra';
+import path from 'path';
+import fs from 'fs-extra';
 
 const LOADS: any = {};
 
@@ -22,9 +22,9 @@ export const load = (
   if (fs.existsSync(directory)) {
     const files = fs.readdirSync(directory);
     files.forEach(item => {
-      if (path.extname(item) === '.js') {
+      if (path.extname(item) === '.ts') {
         // eslint-disable-next-line
-        obj[path.basename(item, '.js')] = require(path.resolve(
+        obj[path.basename(item, '.ts')] = require(path.resolve(
           directory,
           item,
         ));

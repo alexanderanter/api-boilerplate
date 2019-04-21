@@ -1,5 +1,5 @@
-import * as Router from 'koa-router';
-import * as ping from '../controllers/ping';
+import Router from 'koa-router';
+import ping from '../controllers/ping';
 
 export = (router: Router) => {
   /**

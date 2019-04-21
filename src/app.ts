@@ -1,20 +1,20 @@
-import * as Koa from 'koa';
-import * as helmet from 'koa-helmet';
-import * as cors from '@koa/cors';
-import * as koaBody from 'koa-body';
-import * as koaStatic from 'koa-static';
-import * as path from 'path';
-import * as bouncer from 'koa-bouncer';
-import * as passport from 'koa-passport';
-import * as http from 'http';
-import * as send from 'koa-send';
+import Koa from 'koa';
+import helmet from 'koa-helmet';
+import cors from '@koa/cors';
+import koaBody from 'koa-body';
+import koaStatic from 'koa-static';
+import path from 'path';
+import bouncer from 'koa-bouncer';
+import passport from 'koa-passport';
+import http from 'http';
+import send from 'koa-send';
 
 import errorHandling from './middlewares/error-handling';
 import passportConfig from './middlewares/passport';
 import log from './middlewares/logging';
 
 import emailServer from './lib/emailServer';
-import init from './lib/init';
+// import init from './lib/init';
 import routes from './routes';
 import socket from './socket';
 import db from './lib/db';
@@ -23,8 +23,9 @@ import {
   WS_CONNECTION,
   STANDARD_PORT,
   STATIC_FOLDER,
-  EVENTS,
 } from './constants/CONFIG';
+
+import * as EVENTS from './constants/EVENTS';
 
 const app = new Koa();
 const server = http.createServer(app.callback());
@@ -56,7 +57,7 @@ app.use(
 app.use(helmet());
 app.use(cors());
 
-init(app);
+// init(app);
 
 // Email server
 app.context.emailServer = emailServer;
@@ -67,7 +68,7 @@ app.use(passport.initialize());
 app.use(passportConfig());
 
 // Connect websockets
-ws.on(WS_CONNECTION, (req: WebSocket) => {
+ws.on(WS_CONNECTION, req => {
   const connection = socket.connect(req);
   if (connection) {
     socket.listen(connection);
@@ -78,15 +79,8 @@ routes(app);
 
 const { LISTENING_ON } = EVENTS;
 
-// if (!module.parent) {
-  const port = process.env.PORT || STANDARD_PORT;
-  server.listen(port);
-  // eslint-disable-next-line
-  console.log(`${LISTENING_ON}: ${port}`);
-// }
-
-// memwatch.on('leak', data => {
-//   log.logger.fatal(data);
-// });
+const port = process.env.PORT || STANDARD_PORT;
+server.listen(port);
+console.log(`${LISTENING_ON}: ${port}`);
 
 export default { app, server };

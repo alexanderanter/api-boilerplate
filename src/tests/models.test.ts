@@ -1,5 +1,5 @@
-import * as db from '../lib/db';
-import * as User from '../models/User';
+import db from '../lib/db';
+import User from '../models/User';
 
 process.env.NODE_ENV = 'test';
 
@@ -8,11 +8,9 @@ interface iCTX {
 }
 
 describe('Test routes endpoints', () => {
-  const ctx: iCTX = { mongoose: undefined };
-  const next = () => {};
   beforeAll(async () => {
     try {
-      await db.connect()(ctx, next);
+      await db.connect();
     } catch (error) {
       console.log(error);
     }

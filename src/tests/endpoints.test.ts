@@ -2,20 +2,19 @@ process.env.NODE_ENV = 'test';
 
 const request = require('supertest');
 
-const { app, server } = require('../index');
-const db = require('../lib/db');
+import App from '../app';
+import db from '../lib/db';
+
+const { app, server } = App;
 
 interface iCTX {
   mongoose: any;
 }
 
 describe('Test routes endpoints', () => {
-  const ctx: iCTX = { mongoose: undefined };
-  const next = () => {};
-
   beforeAll(async () => {
     try {
-      await db.connect()(ctx, next);
+      await db.connect();
     } catch (error) {
       console.log(error);
     }

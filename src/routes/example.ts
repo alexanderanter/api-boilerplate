@@ -1,10 +1,10 @@
-import * as Router from 'koa-router';
-import * as file from '../controllers/file';
+import Router from 'koa-router';
+import koaBody from 'koa-body';
+import file from '../controllers/file';
 
-const koaBody = require('koa-body');
+import { STATIC_FOLDER, UPLOADS_FOLDER } from '../constants/CONFIG';
 
 export = (router: Router) => {
-  const { STATIC_FOLDER, UPLOADS_FOLDER } = app.context.constants.CONFIG;
   /**
    * @api {post} /example/files Upload file to API
    * @apiName ExampleFileUpload

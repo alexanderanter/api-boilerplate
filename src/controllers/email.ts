@@ -1,4 +1,5 @@
-import { Context } from 'koa';
+import { ParameterizedContext as Context } from 'koa';
+import * as ServerErrors from '../errors/ServerErrors';
 
 /**
  * Sends an email that is attached to the context
@@ -14,7 +15,8 @@ export const send = async (ctx: Context) => {
       message: `Email successfully sent to ${recipient}, check your inbox for login link.`,
     };
   } catch (error) {
-    const { InternalServerError } = ctx.errors.ServerErrors;
+    console.log(error);
+    const { InternalServerError } = ServerErrors;
     ctx.throw(new InternalServerError());
   }
 };

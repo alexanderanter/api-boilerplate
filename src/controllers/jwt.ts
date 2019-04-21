@@ -1,7 +1,10 @@
-import * as jwt from 'jsonwebtoken';
-import * as config from 'config';
+import jwt from 'jsonwebtoken';
+import config from 'config';
 import { iUser } from '../models/User';
-import { Context } from 'koa';
+import { ParameterizedContext as Context } from 'koa';
+
+import * as ClientErrors from '../errors/ClientErrors';
+import * as ServerErrors from '../errors/ServerErrors';
 
 /**
  * Creates a JSON Web Token based on the user object
@@ -36,7 +39,7 @@ export const encode = async (ctx: Context, next: Function) => {
     ctx.token = createToken(ctx.user, secret);
     await next();
   } catch (error) {
-    const { InternalServerError } = ctx.errors.ServerErrors;
+    const { InternalServerError } = ServerErrors;
     ctx.throw(new InternalServerError());
   }
 };
@@ -75,7 +78,7 @@ export const decode = async (ctx: Context, next: Function) => {
   try {
     ctx.decoded = jwt.verify(token, secret);
   } catch (err) {
-    const { Forbidden } = ctx.errors.ClientErrors;
+    const { Forbidden } = ClientErrors;
     ctx.throw(new Forbidden());
   }
   await next();
